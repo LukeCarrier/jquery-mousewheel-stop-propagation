@@ -10,8 +10,9 @@
 	$.fn.mousewheelStopPropagation = function(options) {
 		options = $.extend({
 			// defaults
+			fuzz: 3, // Number of pixels difference to tolerate
 			wheelstop: null // Function
-			}, options);
+		}, options);
 		
 		// Compatibilities
 		var ua = navigator.userAgent.toLowerCase(),
@@ -40,8 +41,8 @@
 			    $this = $(_this);
 			$this.on(mousewheelEventName, function(event) {
 				var origiEvent = event.originalEvent;
-				var scrollTop = _this.scrollTop,
-				    scrollMax = _this.scrollHeight - $this.outerHeight(),
+				var scrollTop = Math.ceil(_this.scrollTop),
+				    scrollMax = Math.floor(_this.scrollHeight - $this.outerHeight()) - options.fuzz,
 				    delta = -origiEvent.wheelDelta;
 				if(isNaN(delta)) {
 					delta = origiEvent.deltaY;
